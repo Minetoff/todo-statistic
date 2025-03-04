@@ -13,6 +13,7 @@ function getFiles() {
 
 function findTodosInFiles(files) {
     const todos = [];
+    const importantTODOs = []
 
     const todoRegex = /\/\/\s*TODO\s*(.*)/g;
 
@@ -20,13 +21,20 @@ function findTodosInFiles(files) {
         let match;
         while ((match = todoRegex.exec(fileContent)) !== null) {
             todos.push(match[1].trim());
+            if (match[1].includes('!')) {
+                importantTODOs.push(match[1].trim())
+            }
         }
     });
 
-    return todos;
+    return [todos, importantTODOs];
 }
 
+
+
 const todos = findTodosInFiles(files);
+
+
 
 function processCommand(command) {
     switch (command) {
@@ -34,10 +42,10 @@ function processCommand(command) {
             process.exit(0);
             break;
         case 'show':
-            console.log(todos.join(' '));
-        default:
-            console.log('wrong command');
+            console.log(todos[0].join('\n'));
             break;
+        case 'important':
+            console.log(todos[1].join('\n'));
     }
 }
 
