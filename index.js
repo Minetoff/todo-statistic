@@ -58,10 +58,10 @@ function printTodos(todosArray) {
     todosArray.forEach(todo => {
         let line = '';
         if (todo.user) {
-            line += `${todo.user}`;
+            line += `${todo.user} `;
         }
         if (todo.date) {
-            line += `${todo.date}`;
+            line += `${todo.date} `;
         }
         line += todo.text;
         if (todo.important) {
