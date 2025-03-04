@@ -63,6 +63,11 @@ function printTodos(todosArray) {
         console.log('No TODOs found.');
         return;
     }
+    const col1 = formatCell('!', 1);
+    const col2 = formatCell('user', 10);
+    const col3 = formatCell('date', 10);
+    const col4 = formatCell('comment', 50);
+    console.log(`${col1}  |  ${col2}  |  ${col3}  |  ${col4}`);
     todosArray.forEach(todo => {
         const col1 = formatCell(todo.important ? '!' : '', 1);
         const col2 = formatCell(todo.user, 10);
