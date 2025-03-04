@@ -14,6 +14,7 @@ function getFiles() {
 function findTodosInFiles(files) {
     const todos = [];
     const importantTODOs = []
+    const usersTODOs = new Map()
 
     const todoRegex = /\/\/\s*TODO\s*(.*)/g;
 
@@ -24,16 +25,17 @@ function findTodosInFiles(files) {
             if (match[1].includes('!')) {
                 importantTODOs.push(match[1].trim())
             }
+            if (match[1].includes(';')) {
+                const splitTODO = match[1].split(';')
+                usersTODOs.set(splitTODO[0], [splitTODO[1].trim(), splitTODO[2].trim()])
+            }
         }
     });
 
     return [todos, importantTODOs];
 }
 
-
-
 const todos = findTodosInFiles(files);
-
 
 
 function processCommand(command) {
@@ -46,6 +48,12 @@ function processCommand(command) {
             break;
         case 'important':
             console.log(todos[1].join('\n'));
+            break;
+        case /^user\s+\w+$/.test(command): {
+            const username = command.split(' ')[1];
+            console.log(todos[2].get(username)[1].join('\n'));
+            break;
+        }
     }
 }
 
