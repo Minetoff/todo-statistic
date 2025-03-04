@@ -39,14 +39,14 @@ const todos = findTodosInFiles(files);
 
 
 function processCommand(command) {
-    switch (command) {
-        case 'exit':
+    switch (true) {
+        case command === 'exit':
             process.exit(0);
             break;
-        case 'show':
+        case command === 'show':
             console.log(todos[0].join('\n'));
             break;
-        case 'important':
+        case command ==='important':
             console.log(todos[1].join('\n'));
             break;
         case /^user\s+\w+$/.test(command): {
