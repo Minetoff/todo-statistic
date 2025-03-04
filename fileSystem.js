@@ -1,6 +1,7 @@
 const fs = require('fs');
 
-// TODO PE; 2018-08-20; переименовать?
+// TODO PE; 2018-08-20; переименовать?!!!!!
+// TODO PE; 2018-08-20; переименовать?!
 function getAllFilePathsWithExtension(directoryPath, extension, filePaths) {
     filePaths = filePaths || [];
     // TODO Anonymous Developer; 2016-03-17; Необходимо переписать этот код и использовать асинхронные версии функций для чтения из файла

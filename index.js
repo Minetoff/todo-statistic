@@ -50,26 +50,51 @@ function getMarkCount(str) {
     return matches ? matches.length : 0;
 }
 
+function formatCell(text, width) {
+    text = text || '';
+    if (text.length > width) {
+        return text.slice(0, width - 3) + '...';
+    }
+    return text.padEnd(width, ' ');
+}
+
 function printTodos(todosArray) {
     if (todosArray.length === 0) {
         console.log('No TODOs found.');
         return;
     }
     todosArray.forEach(todo => {
-        let line = '';
-        if (todo.user) {
-            line += `${todo.user} `;
-        }
-        if (todo.date) {
-            line += `${todo.date} `;
-        }
-        line += todo.text;
-        if (todo.important) {
-            line += ' ' + '!'.repeat(todo.markCount);
-        }
-        console.log(line);
+        const col1 = formatCell(todo.important ? '!' : '', 1);
+        const col2 = formatCell(todo.user, 10);
+        const col3 = formatCell(todo.date, 10);
+        const col4 = formatCell(todo.text, 50);
+        console.log(`${col1}  |  ${col2}  |  ${col3}  |  ${col4}`);
     });
 }
+
+function parseInputDate(dateStr) {
+    const parts = dateStr.split("-");
+    if (parts.length === 1) {
+        return new Date(dateStr + "-01-01");
+    } else if (parts.length === 2) {
+        return new Date(dateStr + "-01");
+    } else {
+        return new Date(dateStr);
+    }
+}
+
+function parseTodoDate(dateStr) {
+    if (!dateStr) return null;
+    const parts = dateStr.split("-");
+    if (parts.length === 1) {
+        return new Date(dateStr + "-01-01");
+    } else if (parts.length === 2) {
+        return new Date(dateStr + "-01");
+    } else {
+        return new Date(dateStr);
+    }
+}
+
 function processCommand(command) {
     const trimmedCommand = command.trim();
     if (trimmedCommand === 'exit') {
@@ -130,10 +155,16 @@ function processCommand(command) {
             default:
                 console.log('Unknown sort flag. Use: importance, user or date.');
         }
+    } else if (/^date\s+\d{4}(-\d{2})?(-\d{2})?$/i.test(trimmedCommand)) {
+        const parts = trimmedCommand.split(/\s+/);
+        const inputDate = parseInputDate(parts[1]);
+        const filteredTodos = todos.filter(todo => {
+            if (!todo.date) return false;
+            const todoDate = parseTodoDate(todo.date);
+            return todoDate > inputDate;
+        });
+        printTodos(filteredTodos);
     } else {
         console.log('Wrong command');
     }
 }
-
-
-// TODO переименов!!!!!!!
